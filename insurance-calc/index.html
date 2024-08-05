@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <title>医保报销计算器</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/modal.css">
+  <script src="./js/modal.js"></script>
+  <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+      border: 1px solid #d6d6d6;
+      padding-left: 6px;
+      border-radius: 6px 0 0 6px;
+      margin-left: 6px;
+      
+      line-height: 2em;
+
+    }
+
+    input[type=number]:focus {
+      outline: none;
+      border: 1px solid #2ba245;
+      border-right: 1px solid #d6d6d6;
+    }
+    input[type=number]:focus + span{
+      border: 1px solid #2ba245;
+      border-left: none;
+    }
+    input[type=number]::selection {
+      background-color: #2ba245;
+      color: #fff;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      min-height: 410px;
+      user-select: none;
+      overflow: auto;
+      background-color: #f5f5f5;
+      /* background: linear-gradient(300deg, #f7f0ac, #acf7f0, #f0acf7); */
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .app .container {
+      flex-grow: 1;
+      padding: 12px;
+      position: relative;
+      /* background-color: #fff; */
+    }
+
+    .app .container .input-group .input-item {
+      margin: 12px 0;
+      display: flex;
+    }
+
+    .app .container .input-group .input-item input {
+      flex-grow: 1;
+    }
+
+    
+
+    .app .container .input-group a {
+      float: right;
+      color: #2ba245;
+      margin-right: 32px;
+      /* margin-top: 12px; */
+    }
+
+    .app .menu {
+      flex-basis: 56px;
+      background-color: #fff;
+    }
+    .app .menu .item .logo svg path{
+      fill:#2ba245
+    }
+    .input-item label {
+      line-height: 2em;
+      white-space: nowrap;
+    }
+
+    .input-item span {
+      line-height: 2em;
+      border: 1px solid #d6d6d6;
+      /* background-color: rgb(185, 185, 185); */
+      flex-basis: 32px;
+      text-align: center;
+      border-radius: 0 6px 6px 0;
+      border-left: none;
+    }
+
+    .container .calc {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      height: 56px;
+      bottom: 12px;
+      font-size: 1.2em;
+      background-color: #2ba245;
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+    }
+
+    .container .calc:hover {
+      background-color: rgb(43 162 69/90%);
+    }
+
+    .container .calc:active {
+      background-color: rgb(43 162 69/80%);
+    }
+
+    .menu .item {
+      display: flex;
+    }
+
+    .menu .item .logo {
+      padding: 6px;
+      box-sizing: border-box;
+    }
+
+    .menu .item .author {
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu .item .author h5 {
+      flex-grow: 1;
+      /* font-size: 1.3em; */
+      padding-top: 6px;
+      font-weight: 600;
+    }
+
+    .menu .item .author div {
+      flex-grow: 1;
+      font-size: 0.8em;
+      padding-top: 6px;
+      color: #999999;
+    }
+
+    footer {
+      height: 32px;
+      line-height: 32px;
+      color: #999999;
+      font-size: 0.8em;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      margin: 0 12px;
+      
+    }
+    footer a {
+      color: #999999;
+      text-decoration: none;
+      
+    }
+    
+   
+    footer a:last-child{
+      margin-right: 0;
+    }
+    footer a:not(:last-child)::after{
+      content: '|';
+      padding:0 5px;
+    }
+    
+  </style>
+</head>
+
+<body>
+    <div class="app">
+    <header class="menu">
+      <div class="item">
+        <div class="logo">
+          <svg t="1704799828232" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="6597" width="48" height="48">
+            <path
+              d="M363.3152 416.426667C336.918756 416.426667 315.528533 437.816889 315.528533 464.213333 315.528533 490.609778 336.918756 512 363.3152 512 389.711644 512 411.101867 490.609778 411.101867 464.213333 411.101867 437.816889 389.711644 416.426667 363.3152 416.426667M511.993173 671.307093C485.596729 671.307093 464.206507 692.697316 464.206507 719.09376 464.206507 745.490204 485.596729 766.880427 511.993173 766.880427 538.389618 766.880427 559.77984 745.490204 559.77984 719.09376 559.77984 692.697316 538.389618 671.307093 511.993173 671.307093M511.993173 543.864604C485.596729 543.864604 464.206507 565.254827 464.206507 591.651271 464.206507 618.047716 485.596729 639.437938 511.993173 639.437938 538.389618 639.437938 559.77984 618.047716 559.77984 591.651271 559.77984 565.254827 538.389618 543.864604 511.993173 543.864604M363.3152 543.864604C336.918756 543.864604 315.528533 565.254827 315.528533 591.651271 315.528533 618.047716 336.918756 639.437938 363.3152 639.437938 389.711644 639.437938 411.101867 618.047716 411.101867 591.651271 411.101867 565.254827 389.711644 543.864604 363.3152 543.864604M363.3152 671.307093C336.918756 671.307093 315.528533 692.697316 315.528533 719.09376 315.528533 745.490204 336.918756 766.880427 363.3152 766.880427 389.711644 766.880427 411.101867 745.490204 411.101867 719.09376 411.101867 692.697316 389.711644 671.307093 363.3152 671.307093M368.621796 354.831929 655.364551 354.831929C678.825529 354.831929 697.849173 335.808284 697.849173 312.347307L697.849173 286.861084C697.849173 263.400107 678.825529 244.376462 655.364551 244.376462L368.621796 244.376462C345.160818 244.376462 326.137173 263.400107 326.137173 286.861084L326.137173 312.347307C326.137173 335.808284 345.160818 354.831929 368.621796 354.831929M763.653689 767.1808C763.653689 802.360889 735.118222 830.896356 699.938133 830.896356L324.061867 830.896356C288.859022 830.896356 260.323556 802.360889 260.323556 767.1808L260.323556 256.841956C260.323556 221.639111 288.859022 193.103644 324.061867 193.103644L699.938133 193.103644C735.118222 193.103644 763.653689 221.639111 763.653689 256.841956L763.653689 767.1808ZM512 0C229.216711 0 0 229.239467 0 512 0 794.783289 229.216711 1024 512 1024 794.760533 1024 1024 794.783289 1024 512 1024 229.239467 794.760533 0 512 0L512 0ZM660.671147 416.426667C634.274702 416.426667 612.88448 437.816889 612.88448 464.213333 612.88448 490.609778 634.274702 512 660.671147 512 687.067591 512 708.457813 490.609778 708.457813 464.213333 708.457813 437.816889 687.067591 416.426667 660.671147 416.426667M511.993173 416.426667C485.596729 416.426667 464.206507 437.816889 464.206507 464.213333 464.206507 490.609778 485.596729 512 511.993173 512 538.389618 512 559.77984 490.609778 559.77984 464.213333 559.77984 437.816889 538.389618 416.426667 511.993173 416.426667M660.671147 671.307093C634.274702 671.307093 612.88448 692.697316 612.88448 719.09376 612.88448 745.490204 634.274702 766.880427 660.671147 766.880427 687.067591 766.880427 708.457813 745.490204 708.457813 719.09376 708.457813 692.697316 687.067591 671.307093 660.671147 671.307093M660.671147 543.864604C634.274702 543.864604 612.88448 565.254827 612.88448 591.651271 612.88448 618.047716 634.274702 639.437938 660.671147 639.437938 687.067591 639.437938 708.457813 618.047716 708.457813 591.651271 708.457813 565.254827 687.067591 543.864604 660.671147 543.864604"
+              fill="#2ba245" p-id="6598"></path>
+          </svg>
+        </div>
+        <div class="author">
+          <h5>医保报销计算器</h5>
+          <div>任意输入两项数值，点击'计算'即可算出结果.</div>
+        </div>
+
+
+      </div>
+    </header>
+    <article class="container">
+
+      <div class="input-group">
+        <!-- <h3 class="input-title">医保报销计算器</h3> -->
+        <div class="input-item" id="consume">
+          <label>医保消费金额</label>
+          <input type="number" data-flag="1">
+          <span>元</span>
+        </div>
+        <div class="input-item" id="co-ordination">
+          <label>统筹支付金额</label>
+          <input type="number" data-flag="2">
+
+          <span>元</span>
+        </div>
+        <div class="input-item" id="self-pay">
+          <label>个人支付金额</label>
+          <input type="number" data-flag="4">
+          <span>元</span>
+        </div>
+        <div class="input-item" id="percentage">
+          <label>医保报销比例</label>
+          <input type="number" data-flag="8" min="0" max="100">
+          <span>%</span>
+        </div>
+        <a href="#">清空数据</a>
+      </div>
+      <button class="calc">计算</button>
+    </article>
+    <footer>
+      <a href="https://s87345504.github.io/"  title="食物钾磷含量查询">食物钾磷查询</a>
+      <a href="#" id="foot-wechat" title="微信">雨落无声</a>
+      <script type="text/javascript" src="https://js.users.51.la/21851541.js"></script>
+    </footer>
+  </div>
+  
+  <script>
+    const flag = '240311'
+    if (localStorage.getItem("first_start") !== flag) {
+      localStorage.setItem("first_start", flag)
+      new Modal("提示", `
+      食物钾磷含量查询工具已上线，点击页面底部链接进入！
+    `).open()
+    }
+
+    //组件dom对象
+    const doms = {
+      //医保消费金额
+      consume: document.querySelector("#consume input"),
+      //统筹支付金额
+      coOrdination: document.querySelector("#co-ordination input"),
+      //自己支付
+      selfPay: document.querySelector("#self-pay input"),
+      //报销比例
+      percentage: document.querySelector("#percentage input"),
+      btn: document.querySelector(".calc")
+    }
+    //1 2 4 8
+    // 1 | 2 = 3
+    // 1 | 4 = 5
+    // 1 | 8 = 9
+    // 2 | 4 = 6
+    // 2 | 8 = 10
+    // 4 | 8 = 12
+    //六种组合方式!只要满足其中一种即可!
+    const typeList = [3, 5, 9, 6, 10, 12];
+
+    const checkCalcType = () => {
+      let flag = 0
+
+      flag |= +doms.consume.value ? doms.consume.dataset.flag : 0
+      flag |= +doms.coOrdination.value ? doms.coOrdination.dataset.flag : 0
+      if (typeList.includes(flag)) return flag;
+
+      flag |= +doms.selfPay.value ? doms.selfPay.dataset.flag : 0
+      if (typeList.includes(flag)) return flag;
+      flag |= +doms.percentage.value ? doms.percentage.dataset.flag : 0
+      if (typeList.includes(flag)) return flag;
+      return 0
+    }
+    const calc = (type) => {
+      console.log(type);
+      switch (type) {
+        case 3:
+          doms.selfPay.value = (+doms.consume.value - +doms.coOrdination.value).toFixed(2)
+          doms.percentage.value = ((+doms.coOrdination.value / +doms.consume.value) * 100).toFixed(2)
+          break;
+        case 5:
+          doms.coOrdination.value = (+doms.consume.value - doms.selfPay.value).toFixed(2)
+          doms.percentage.value = ((+doms.coOrdination.value / +doms.consume.value) * 100).toFixed(2)
+          break;
+        case 9:
+          const t = (+doms.percentage.value) / 100
+          doms.coOrdination.value = +doms.consume.value * t
+          doms.selfPay.value = (+doms.consume.value - +doms.coOrdination.value).toFixed(2)
+          break;
+        case 6:
+          doms.consume.value = +doms.coOrdination.value + +doms.selfPay.value
+          doms.percentage.value = ((+doms.coOrdination.value / +doms.consume.value) * 100).toFixed(2)
+          break;
+        case 10:
+          doms.consume.value = (+doms.coOrdination.value / (+doms.percentage.value / 100)).toFixed(2)
+          doms.selfPay.value = (+doms.consume.value - +doms.coOrdination.value).toFixed(2)
+          break;
+        case 12:
+
+          doms.consume.value = (+doms.selfPay.value / (1 - +doms.percentage.value / 100)).toFixed(2)
+          doms.coOrdination.value = (+doms.consume.value - +doms.selfPay.value).toFixed(2)
+          break
+        default:
+          console.log("default");
+          new Modal("提示", "Unknown method of calculation\nTypeValue:" + type).open()
+      }
+    }
+
+    doms.btn.addEventListener("click", e => {
+      const type = checkCalcType()
+      if (!type) {
+        new Modal("错误", "最少需要输入两个项目或输入无效！").open()
+        return
+      }
+      if (type === 3 && +doms.consume.value < +doms.coOrdination.value) {
+        new Modal("错误", "医保消费金额不能小于统筹支付金额").open()
+        return
+      }
+      if (type & 8 && +doms.percentage.value >= 100 || +doms.percentage.value < 0) {
+        new Modal("错误", "报销比例输入数值错误,请输入0-100的数值！").open()
+        return
+      }
+      if (type === 12 && doms.percentage.value === "100") {
+        new Modal("错误", "输入错误，无法计算！").open()
+        return
+      }
+      calc(type)
+      // console.dir(doms.consume);
+    })
+
+    document.querySelector(".input-group a").addEventListener("click", e => {
+      e.preventDefault()
+      doms.consume.value = ''
+      doms.coOrdination.value = ''
+      doms.selfPay.value = ''
+      doms.percentage.value = ''
+    })
+
+    document.querySelector("footer #foot-wechat").addEventListener("click", e => {
+      e.preventDefault()
+      const input =document.createElement("input")
+      input.value = e.target.innerText
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand("Copy")
+      document.body.removeChild(input)
+      new Modal("提示", "微信号已复制到剪贴板！").open()
+    })
+// document.querySelector("footer a:last-child").addEventListener("click", e => {
+//   new Modal("输入密码", '<input class="diy_51la" type="text" style=""><br><div class="diy_error"  style="color:red"></div>',"确认",function(){
+//     console.dir(this.querySelector(".diy_51la"));
+//     if(this.querySelector(".diy_51la").value==='syx'){
+//       return false
+//     }else{
+//       this.querySelector(".diy_error").textContent='密码错误'
+//       return true
+//     }
+    
+//   }).open()
+//   e.preventDefault()
+// })
+  </script>
+</body>
+
+</html>
