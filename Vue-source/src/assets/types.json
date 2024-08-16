@@ -1,0 +1,52 @@
+[
+    {
+        "text": "能量",
+        "alias": "kcal",
+        "unit": "千卡"
+    },
+    {
+        "text": "蛋白质",
+        "alias": "protein",
+        "unit": "克"
+    },
+    {
+        "text": "脂肪",
+        "alias": "fat",
+        "unit": "克"
+    },
+    {
+        "text": "碳水化合物",
+        "alias": "carbo",
+        "unit": "克"
+    },
+    {
+        "text": "粗纤维",
+        "alias": "fibre",
+        "unit": "克"
+    },
+    {
+        "text": "胆固醇",
+        "alias": "cholesterol",
+        "unit": "毫克"
+    },
+    {
+        "text": "钙",
+        "alias": "ca",
+        "unit": "毫克"
+    },
+    {
+        "text": "铁",
+        "alias": "fe",
+        "unit": "毫克"
+    },
+    {
+        "text": "维生素C",
+        "alias": "vc",
+        "unit": "毫克"
+    },
+    {
+        "text": "维生素E",
+        "alias": "ve",
+        "unit": "毫克"
+    }
+]
