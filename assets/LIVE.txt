@@ -1,2 +1,0 @@
-CCTV_123,#genre#
-CCTV-1,https://node3.olelive.com:6443/live/CCTV1HD/hls.m3u8
