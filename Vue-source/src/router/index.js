@@ -12,8 +12,8 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path:'/',
+      name:"default",
       component: defaultView
     },
     {
@@ -61,5 +61,8 @@ const router = createRouter({
     }
   ]
 })
-
+router.afterEach((to, from) => {
+  const area = document.querySelector('#client')
+  if(area) area.scrollTop = 0
+})
 export default router

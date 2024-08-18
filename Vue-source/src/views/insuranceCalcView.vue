@@ -61,7 +61,8 @@ const clear = () => {
 </script>
 
 <template>
-  <CellGroup inset title="任意输入两项数值，点击'计算'即可算出结果.">
+  <div>
+    <CellGroup inset title="任意输入两项数值，点击'计算'即可算出结果.">
     <Field v-for="input in inputs" v-model.number="input.value"  :label="input.name" 
       type="number"
       :placeholder="input.description">
@@ -76,6 +77,7 @@ const clear = () => {
       <Button @click="c" type="primary" block>计算</Button>
     </Cell>
   </CellGroup>
+  </div>
 
 </template>
 

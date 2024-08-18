@@ -47,6 +47,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+ <div>
   <CellGroup title="选择需要显示的类型">
     <Cell v-for="item in types" :value="item.unit" :label="`Alias:${item.alias}`">
       <template #title>
@@ -54,6 +55,7 @@ onBeforeUnmount(() => {
       </template>
     </Cell>
   </CellGroup>
+ </div>
 
 </template>
 

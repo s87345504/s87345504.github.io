@@ -1,5 +1,5 @@
 <script setup name="App">
-import { RouterView } from 'vue-router'
+
 import { ConfigProvider, BackTop, showConfirmDialog, showSuccessToast,Empty  } from 'vant'
 import appHeader from './components/appHeader.vue';
 import appLoading from './components/appLoading.vue';
@@ -58,7 +58,13 @@ function copyText(text) {
   <ConfigProvider  style="user-select: none;" :theme="themeStore.theme" class="container">
     <appHeader :title='appStrore.title' />
     <article id="client">
-      <RouterView />
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          
+            <component :is="Component" />
+          
+        </transition>
+      </router-view>
 
       <BackTop target="#client" />
     </article>
@@ -92,5 +98,24 @@ function copyText(text) {
 
 footer {
   background-color: var(--van-background-2);
+}
+
+
+.fade-enter-active,
+.fade-leave-active{
+  transition: all 0.3s ease;
+  transform-origin: center top;
+
+
+}
+
+
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+
+  
 }
 </style>

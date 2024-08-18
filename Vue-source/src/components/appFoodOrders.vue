@@ -33,6 +33,9 @@ const props = defineProps({
             <span style="margin-left: 4px"> {{ sortTypes[sorts.value].unit }} </span>
            </div>
         </template>
+        <template v-if="food.alias!==null" #label>
+            <span>{{ food.alias }}</span>
+        </template>
       </Cell>
     </CellGroup>
 </template>

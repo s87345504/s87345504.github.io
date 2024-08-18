@@ -9,11 +9,13 @@ appStore.title= '隐藏角落';
 </script>
 
 <template>
-  <CellGroup title="隐藏角落">
+  <div>
+    <CellGroup title="隐藏角落">
     
     <Cell title="页面调试" is-link @click="show" />
     <Cell title="类型编辑" is-link to="/typeEdit" />
   </CellGroup>
+  </div>
 </template>
 
 <style scoped>

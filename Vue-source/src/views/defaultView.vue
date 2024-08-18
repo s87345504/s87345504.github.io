@@ -3,7 +3,7 @@ import {Grid, GridItem ,Empty} from 'vant'
 import { useAppStore } from '@/stores/appStore'
 
 const appStore = useAppStore()
-appStore.title='肾友食物钾磷含量查询'
+appStore.title='首页分类'
 </script>
 
 <template>

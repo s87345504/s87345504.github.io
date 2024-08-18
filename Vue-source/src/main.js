@@ -35,7 +35,7 @@ console.info(`我入红尘几经年;
 轩窗静里忆从前!
 `)
 
-const mainVersion='2024-08-16 build6'
+const mainVersion='2024-08-18'
 //版本更新后,清除缓存
 if(localStorage.getItem('newVersion')!==mainVersion){
   localStorage.clear()
