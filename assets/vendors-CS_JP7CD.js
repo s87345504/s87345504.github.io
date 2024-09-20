@@ -1,4 +1,4 @@
-import{g as getDefaultExportFromCjs,c as commonjsGlobal}from"./index-Ba4NYGVm.js";/**
+import{g as getDefaultExportFromCjs,c as commonjsGlobal}from"./index-BvqJ_jJD.js";/**
 * @vue/shared v3.4.21
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
