@@ -1,62 +1,131 @@
-[  
-    {  
-        "text": "能量",  
-        "alias": "kcal",  
-        "unit": "千卡",  
-        "checked": true  
-    },  
-    {  
-        "text": "蛋白质",  
-        "alias": "protein",  
-        "unit": "克",  
-        "checked": true  
-    },  
-    {  
-        "text": "脂肪",  
-        "alias": "fat",  
-        "unit": "克",  
-        "checked": true  
-    },  
-    {  
-        "text": "碳水化合物",  
-        "alias": "carbo",  
-        "unit": "克",  
-        "checked": true  
-    },  
-    {  
-        "text": "粗纤维",  
-        "alias": "fibre",  
-        "unit": "克",  
-        "checked": true  
-    },  
-    {  
-        "text": "胆固醇",  
-        "alias": "cholesterol",  
-        "unit": "毫克",  
-        "checked": true  
-    },  
-    {  
-        "text": "钙",  
-        "alias": "ca",  
-        "unit": "毫克",  
-        "checked": true  
-    },  
-    {  
-        "text": "铁",  
-        "alias": "fe",  
-        "unit": "毫克",  
-        "checked": true  
-    },  
-    {  
-        "text": "维生素C",  
-        "alias": "vc",  
-        "unit": "毫克",  
-        "checked": true  
-    },  
-    {  
-        "text": "维生素E",  
-        "alias": "ve",  
-        "unit": "毫克",  
-        "checked": true  
-    }  
+[
+    {
+        "text": "能量",
+        "alias": "kcal",
+        "unit": "千卡",
+        "checked": true
+    },
+    {
+        "text": "蛋白质",
+        "alias": "protein",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "脂肪",
+        "alias": "fat",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "碳水化合物",
+        "alias": "carbo",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "粗纤维",
+        "alias": "fibre",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "胆固醇",
+        "alias": "cholesterol",
+        "unit": "毫克",
+        "checked": true
+    },
+    {
+        "text": "单不饱和脂肪酸",
+        "alias": "mufas",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "多不饱和脂肪酸",
+        "alias": "pufas",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "反式脂肪酸",
+        "alias": "tfa",
+        "unit": "克",
+        "checked": true
+    },
+    {
+        "text": "植物固醇",
+        "alias": "phytosterol",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text":"胡萝卜素",
+        "alias":"carotene",
+        "unit":"微克",
+        "checked":true
+    },{
+        "text":"叶黄素类",
+        "alias":"l_z_c",
+        "unit":"微克",
+        "checked":true
+    },{
+        "text":"番茄红素",
+        "alias":"lycopene",
+        "unit":"微克",
+        "checked":true
+    },
+    {
+        "text": "钙",
+        "alias": "ca",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text": "镁",
+        "alias": "mg",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text": "钠",
+        "alias": "na",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text": "硫",
+        "alias": "s",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text": "氯",
+        "alias": "cl",
+        "unit": "毫克",
+        "checked": true
+    },
+    {
+        "text": "铁",
+        "alias": "fe",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text": "锌",
+        "alias": "zu",
+        "unit": "毫克",
+        "checked": true
+    },{
+        "text": "硒",
+        "alias": "se",
+        "unit": "微克",
+        "checked": true
+    },
+    {
+        "text": "维生素C",
+        "alias": "vc",
+        "unit": "毫克",
+        "checked": true
+    },
+    {
+        "text": "维生素E",
+        "alias": "ve",
+        "unit": "毫克",
+        "checked": true
+    }
 ]
