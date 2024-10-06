@@ -5,11 +5,20 @@ import typesData from '@/assets/types.json'
 import { Cell, CellGroup, Checkbox } from 'vant'
 import { useAppStore } from '@/stores/appStore'
 import { showToast } from 'vant';
+import { watch } from 'vue';
 
 
 const appStore = useAppStore()
 
 
+const allchecked=ref(true)
+watch(allchecked, (val) => {
+  
+    types.value.forEach(item => {
+    item.checked = val
+  })
+ 
+})
 
 appStore.title = 'type selection'
 const types = ref(localStorage.getItem('types') ? JSON.parse(localStorage.getItem('types')) : [])
@@ -43,13 +52,20 @@ onBeforeUnmount(() => {
   showToast( '已保存,刷新页面后生效')
 }
 )
-
+// watch(types.value,(newValue,oldValue)=>{
+//   allchecked.value=newValue.every(item=>item.checked)
+// })
 </script>
 
 <template>
  <div>
-  <CellGroup title="选择需要显示的类型">
-    <Cell v-for="item in types" :value="item.unit" :label="`Alias:${item.alias}`">
+  <CellGroup>
+    <template #title>
+      
+      <Checkbox v-model="allchecked">全选</Checkbox>
+      
+    </template>
+    <Cell v-for="item in types" :value="item.alias" >
       <template #title>
         <Checkbox v-model="item.checked">{{ item.text }}</Checkbox>
       </template>

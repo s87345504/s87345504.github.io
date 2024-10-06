@@ -6,7 +6,7 @@ import foodList from '@/assets/data.json'
 export const useAppStore = defineStore('appStore', () => {
     //搜索框关联响应式
     const keyword = ref('')
-    const title = ref('肾友钾磷含量查询')
+    const title = ref('肾友食物钾磷含量查询')
 
 
     watch(() => title.value, (newValue) => {
@@ -79,7 +79,7 @@ if(import.meta.env.PROD){
         notice.value=res.data?.msg
     })
 }else{
-    notice.value='development'
+    notice.value=["测试中，请勿使用",'development','测试中！']
 }
 
 

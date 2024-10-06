@@ -1,5 +1,6 @@
 <script setup name="appHeader">
-import { NavBar, ActionSheet, Search,showNotify ,Icon,NoticeBar  } from 'vant';
+import { NavBar, ActionSheet, Search,showNotify ,Icon  } from 'vant';
+import headerNoticeBar from './headerNoticeBar.vue'
 import { ref } from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/appStore';
@@ -101,7 +102,8 @@ const back = () => {
         <Icon name="weapp-nav" size="36" />
       </template>
     </NavBar>
-    <NoticeBar  mode="closeable" left-icon="volume-o" v-if="appStore.notice" :text="appStore.notice"></NoticeBar>
+    <!-- <NoticeBar  mode="closeable" left-icon="volume-o" v-if="appStore.notice" :text="appStore.notice"></NoticeBar> -->
+    <headerNoticeBar></headerNoticeBar>
     <Search v-if="route.name!=='insuranceCalc'" v-model="appStore.keyword" @search="searchFood" placeholder="请输入欲查询食物的关键字" input-align="center" />
   </header>
   <ActionSheet  title="含量排行榜前100名" :closeable="false" @select="onSelect" v-model:show="actionSheetShow" close-on-click-action cancel-text="取消" :actions="actions" teleport="body">

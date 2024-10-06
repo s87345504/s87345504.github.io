@@ -19,7 +19,7 @@ watch(() => route.query.type, (newValue) => {
   }
   if (newValue in appStore.foodClass) {
     ids.value = appStore.foodClass[newValue]
-    appStore.title = '分类：' + newValue
+    appStore.title = '分类 - ' + newValue
   } else {
     appStore.title = 'Error'
     ids.value = []
