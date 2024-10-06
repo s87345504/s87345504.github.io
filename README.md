@@ -8,7 +8,9 @@ https://s87345504.github.io/#/
 
 ## 站点Vue源码
 
-See [Github](https://github.com/s87345504/s87345504.github.io/tree/main/Vue-source).
+See [Github](https://github.com/s87345504/s87345504.github.io/tree/main/foodquery-reconfig).
+
+
 
 ## 建立初衷
 
