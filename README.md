@@ -4,7 +4,7 @@
 
 ## 如何打开
 
-https://s87345504.github.io/#/
+http://s87345504.github.io
 
 ## 站点Vue源码
 
