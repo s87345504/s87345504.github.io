@@ -4,8 +4,7 @@
 
 ## 如何打开
 
-
-[![][codespaces-shield]][codespaces-link]
+http://s87345504.github.io
 
 ## 站点Vue源码
 
