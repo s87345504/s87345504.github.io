@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p class="result"></p>
+    <script>
+        //localStorage.getItem('dmluY2hlY2s=') === '5a6L6Zuo6L2p'
+        localStorage.setItem('dmluY2hlY2s=', '5a6L6Zuo6L2p')
+        var result = document.querySelector('.result')
+        result.textContent = localStorage.getItem('dmluY2hlY2s=')=== '5a6L6Zuo6L2p' ? '权限写入成功！' : '权限写入失败！'
+    </script>
+</body>
+</html>
