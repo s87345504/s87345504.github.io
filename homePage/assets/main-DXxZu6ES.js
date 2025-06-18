@@ -6599,6 +6599,31 @@ function defineStore(id, setup, setupOptions) {
   useStore.$id = id;
   return useStore;
 }
+const _sfc_main$4 = {
+  __name: "TimeShow",
+  setup(__props) {
+    const currentTime = ref(/* @__PURE__ */ new Date());
+    let timer = 0;
+    onMounted(() => {
+      timer = setInterval(() => {
+        currentTime.value = /* @__PURE__ */ new Date();
+      }, 1e3);
+    });
+    onUnmounted(() => {
+      clearInterval(timer);
+    });
+    const time = computed(() => {
+      const hour = currentTime.value.getHours().toString().padStart(2, "0");
+      const minute = currentTime.value.getMinutes().toString().padStart(2, "0");
+      return `${hour}:${minute}`;
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("header", null, [
+        createBaseVNode("i", null, toDisplayString(time.value), 1)
+      ]);
+    };
+  }
+};
 const useGradientStore = /* @__PURE__ */ defineStore("GradientOptions", () => {
   const options = ref({
     scale: 0.3
@@ -6618,8 +6643,8 @@ const useGradientStore = /* @__PURE__ */ defineStore("GradientOptions", () => {
     options
   };
 });
-const _hoisted_1$1 = { id: "background-gradient" };
-const _sfc_main$2 = {
+const _hoisted_1$2 = { id: "background-gradient" };
+const _sfc_main$3 = {
   __name: "BackgroundGradient",
   props: {
     colors: {
@@ -6672,7 +6697,7 @@ const _sfc_main$2 = {
       subscribe();
     });
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$1, [
+      return openBlock(), createElementBlock("div", _hoisted_1$2, [
         createBaseVNode("div", {
           class: "mask",
           style: normalizeStyle({ "backdrop-filter": `blur(${blur_.value})` })
@@ -6688,19 +6713,31 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _hoisted_1 = { class: "search-input" };
+const _hoisted_1$1 = { class: "search-input" };
 const _hoisted_2 = {
   key: 0,
   style: { "color": "rgba(0, 0, 0, 0.5)", "user-select": "none", "padding": "12px", "text-align": "center" }
 };
 const _hoisted_3 = ["onClick"];
-const _sfc_main$1 = {
+const _hoisted_4 = ["onClick"];
+const _sfc_main$2 = {
   __name: "SearchInput",
+  props: {
+    showList: {
+      type: Boolean,
+      default: false
+    }
+  },
   emits: ["onFocus"],
   setup(__props, { emit: __emit }) {
+    const props = __props;
+    const searchLink = localStorage.getItem("searchLink") || "https://cn.bing.com/search?q=";
     const emit2 = __emit;
     const keyword = ref("");
     const list_show = ref(false);
+    watch(() => props.showList, (newVal) => {
+      list_show.value = newVal;
+    });
     watch(list_show, (newVal) => {
       emit2("onFocus", newVal);
     });
@@ -6711,9 +6748,10 @@ const _sfc_main$1 = {
     onMounted(() => {
       loadhistory();
     });
-    onUnmounted(() => {
+    const saveHistory = () => {
       localStorage.setItem("searchHistory", JSON.stringify(Array.from(list_content.value)));
-    });
+    };
+    onUnmounted(saveHistory);
     function loadhistory() {
       const storage = localStorage.getItem("searchHistory");
       list_content.value = storage ? new Set(JSON.parse(storage)) : /* @__PURE__ */ new Set();
@@ -6724,21 +6762,24 @@ const _sfc_main$1 = {
     };
     const HandleSearch = () => {
       if (keyword.value) {
-        list_content.value.add(keyword.value);
+        list_content.value = /* @__PURE__ */ new Set([keyword.value, ...list_content.value]);
         localStorage.setItem("searchHistory", JSON.stringify(Array.from(list_content.value)));
+        window.location.href = searchLink + encodeURIComponent(keyword.value);
       }
-      window.location.href = `https://cn.bing.com/search?q=${keyword.value}`;
     };
-    const HandleClear = () => {
-      list_content.value.clear();
+    const HandleSelectKey = (e, item) => {
+      if (e.target.tagName !== "LI") {
+        return;
+      }
+      keyword.value = item;
       list_show.value = false;
-      localStorage.setItem("searchHistory", JSON.stringify(Array.from(list_content.value)));
+      HandleSearch();
     };
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1, [
+      return openBlock(), createElementBlock("div", _hoisted_1$1, [
         createBaseVNode("form", {
+          style: { "z-index": "10" },
           autocomplete: "off",
-          style: { "width": "100%", "display": "flex", "justify-content": "center" },
           id: "search-form",
           onSubmit: withModifiers(HandleSearch, ["prevent"])
         }, [
@@ -6754,70 +6795,160 @@ const _sfc_main$1 = {
             [vModelText, keyword.value]
           ])
         ], 32),
-        createBaseVNode("ul", {
+        createBaseVNode("div", {
           class: "sugrec-list",
-          style: normalizeStyle({ display: !list_show.value ? "none" : "block" })
+          style: normalizeStyle({ transform: list_show.value ? "scale(1)" : "scale(0)" })
         }, [
-          createBaseVNode("button", {
-            class: "close",
-            onClick: _cache[1] || (_cache[1] = ($event) => list_show.value = false)
-          }, _cache[2] || (_cache[2] = [
-            createBaseVNode("i", { style: { "display": "inline-block", "width": "24px", "height": "24px" } }, [
-              createBaseVNode("svg", {
-                version: "1.1",
-                xmlns: "http://www.w3.org/2000/svg",
-                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                x: "0px",
-                y: "0px",
-                viewBox: "0 0 460 460",
-                "enable-background": "new 0 0 512 512",
-                "xml:space": "preserve"
+          createBaseVNode("ul", null, [
+            !list_count.value ? (openBlock(), createElementBlock("li", _hoisted_2, "搜索历史为空")) : createCommentVNode("", true),
+            (openBlock(true), createElementBlock(Fragment, null, renderList(list_content.value, (item) => {
+              return openBlock(), createElementBlock("li", {
+                class: "key",
+                onClick: ($event) => HandleSelectKey($event, item),
+                key: item
               }, [
-                createBaseVNode("path", { d: "M278.6,256l68.2-68.2c6.2-6.2,6.2-16.4,0-22.6c-6.2-6.2-16.4-6.2-22.6,0L256,233.4l-68.2-68.2c-6.2-6.2-16.4-6.2-22.6,0\r\n	c-3.1,3.1-4.7,7.2-4.7,11.3c0,4.1,1.6,8.2,4.7,11.3l68.2,68.2l-68.2,68.2c-3.1,3.1-4.7,7.2-4.7,11.3c0,4.1,1.6,8.2,4.7,11.3\r\n	c6.2,6.2,16.4,6.2,22.6,0l68.2-68.2l68.2,68.2c6.2,6.2,16.4,6.2,22.6,0c6.2-6.2,6.2-16.4,0-22.6L278.6,256z" })
-              ])
-            ], -1)
-          ])),
-          !list_count.value ? (openBlock(), createElementBlock("li", _hoisted_2, "搜索历史为空")) : createCommentVNode("", true),
-          (openBlock(true), createElementBlock(Fragment, null, renderList(list_content.value, (item) => {
-            return openBlock(), createElementBlock("li", {
-              class: "key",
-              onClick: ($event) => {
-                keyword.value = item;
-                list_show.value = false;
-                HandleSearch();
-              },
-              key: item
-            }, toDisplayString(item), 9, _hoisted_3);
-          }), 128)),
-          list_count.value ? (openBlock(), createElementBlock("button", {
-            key: 1,
-            class: "clear",
-            onClick: HandleClear
-          }, "清除记录")) : createCommentVNode("", true)
+                createTextVNode(toDisplayString(item) + " ", 1),
+                createBaseVNode("button", {
+                  class: "clear-key",
+                  onClick: ($event) => {
+                    list_content.value.delete(item);
+                    saveHistory();
+                  }
+                }, _cache[1] || (_cache[1] = [
+                  createBaseVNode("i", { style: { "display": "inline-block", "width": "24px", "height": "24px" } }, [
+                    createBaseVNode("svg", {
+                      version: "1.1",
+                      xmlns: "http://www.w3.org/2000/svg",
+                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                      x: "0px",
+                      y: "0px",
+                      viewBox: "0 0 460 460",
+                      "enable-background": "new 0 0 512 512",
+                      "xml:space": "preserve"
+                    }, [
+                      createBaseVNode("path", { d: "M278.6,256l68.2-68.2c6.2-6.2,6.2-16.4,0-22.6c-6.2-6.2-16.4-6.2-22.6,0L256,233.4l-68.2-68.2c-6.2-6.2-16.4-6.2-22.6,0\r\n	c-3.1,3.1-4.7,7.2-4.7,11.3c0,4.1,1.6,8.2,4.7,11.3l68.2,68.2l-68.2,68.2c-3.1,3.1-4.7,7.2-4.7,11.3c0,4.1,1.6,8.2,4.7,11.3\r\n	c6.2,6.2,16.4,6.2,22.6,0l68.2-68.2l68.2,68.2c6.2,6.2,16.4,6.2,22.6,0c6.2-6.2,6.2-16.4,0-22.6L278.6,256z" })
+                    ])
+                  ], -1)
+                ]), 8, _hoisted_4)
+              ], 8, _hoisted_3);
+            }), 128))
+          ])
         ], 4)
       ]);
     };
   }
 };
-const SearchInput = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-12034f40"]]);
+const SearchInput = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-40f78fe7"]]);
+const _hoisted_1 = ["onClick", "title"];
+const _sfc_main$1 = {
+  __name: "QuickLinkDashboard",
+  setup(__props) {
+    const links = ref(JSON.parse(localStorage.getItem("links")) || [
+      {
+        name: "百度",
+        url: "https://www.baidu.com"
+      },
+      {
+        name: "Bing",
+        url: "https://cn.bing.com/"
+      }
+    ]);
+    function openLink(url) {
+      window.open(url);
+    }
+    function addLink() {
+      const url = prompt("请输入链接地址");
+      if (url) {
+        const name = prompt("请输入链接名称");
+        if (name) {
+          links.value.push({
+            name,
+            url
+          });
+          localStorage.setItem("links", JSON.stringify(links.value));
+        }
+      }
+    }
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("nav", null, [
+        createBaseVNode("ul", null, [
+          (openBlock(true), createElementBlock(Fragment, null, renderList(links.value, (item) => {
+            return openBlock(), createElementBlock("li", {
+              onClick: ($event) => openLink(item.url),
+              key: item.url,
+              title: item.name,
+              class: "item"
+            }, [
+              _cache[1] || (_cache[1] = createBaseVNode("i", null, [
+                createBaseVNode("svg", {
+                  t: "1749805117929",
+                  class: "icon",
+                  viewBox: "0 0 1024 1024",
+                  version: "1.1",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  "p-id": "7746",
+                  width: "32",
+                  height: "32"
+                }, [
+                  createBaseVNode("path", {
+                    d: "M213.333333 938.666667a128.128 128.128 0 0 1-128-128V213.333333a128.128 128.128 0 0 1 128-128h341.333334a42.666667 42.666667 0 0 1 42.666666 42.666667 42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 0-42.666666 42.666666v597.333334a42.666667 42.666667 0 0 0 42.666666 42.666666h597.333334a42.666667 42.666667 0 0 0 42.666666-42.666666V528a42.666667 42.666667 0 0 1 42.666667-42.666667 42.666667 42.666667 0 0 1 42.666667 42.666667V810.666667a128.128 128.128 0 0 1-128 128z m135.744-249.6a457.941333 457.941333 0 0 1 457.450667-457.386667 44.288 44.288 0 0 1 5.12 0.298667l-74.965333-73.813334a42.666667 42.666667 0 0 1 0-60.330666 42.666667 42.666667 0 0 1 60.373333 0l117.013333 117.034666a84.096 84.096 0 0 1 0 118.869334l-117.013333 117.056a42.666667 42.666667 0 0 1-30.186667 12.501333 42.538667 42.538667 0 0 1-30.186666-12.501333 42.666667 42.666667 0 0 1 0-60.330667l73.6-73.621333c-1.301333 0-2.581333 0.106667-3.754667 0.106666A372.522667 372.522667 0 0 0 434.432 689.066667a42.666667 42.666667 0 0 1-42.666667 42.666666 42.666667 42.666667 0 0 1-42.688-42.666666z",
+                    fill: "#fff",
+                    "p-id": "7747"
+                  })
+                ])
+              ], -1)),
+              createBaseVNode("span", null, toDisplayString(item.name), 1)
+            ], 8, _hoisted_1);
+          }), 128)),
+          createBaseVNode("li", {
+            title: "添加链接",
+            onClick: _cache[0] || (_cache[0] = ($event) => addLink()),
+            class: "item add-item"
+          }, _cache[2] || (_cache[2] = [
+            createBaseVNode("i", null, null, -1)
+          ]))
+        ])
+      ]);
+    };
+  }
+};
+const QuickLinkDashboard = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-df216c7c"]]);
 const _sfc_main = {
   __name: "App",
   setup(__props) {
     const blur = ref(10);
+    const showlist = ref(false);
     const seed = ref(getRandom(1e3, 1e5));
     function onSearchfocus(focus) {
-      blur.value = focus ? 60 : 10;
+      if (focus) {
+        blur.value = 60;
+        showlist.value = true;
+      } else {
+        blur.value = 10;
+        showlist.value = false;
+      }
+    }
+    function mainMousedown(e) {
+      const tag = e.target.tagName;
+      if (tag === "MAIN" || tag === "NAV") {
+        showlist.value = false;
+      }
     }
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock(Fragment, null, [
-        createVNode(_sfc_main$2, {
+        createVNode(_sfc_main$3, {
           blur: blur.value,
           seed: seed.value
         }, null, 8, ["blur", "seed"]),
-        createBaseVNode("main", null, [
-          _cache[0] || (_cache[0] = createBaseVNode("div", { style: { "height": "20vh", "min-height": "100px" } }, null, -1)),
-          createVNode(SearchInput, { onOnFocus: onSearchfocus })
-        ])
+        createBaseVNode("main", { onMousedown: mainMousedown }, [
+          createVNode(_sfc_main$4),
+          createVNode(SearchInput, {
+            showList: showlist.value,
+            onOnFocus: onSearchfocus
+          }, null, 8, ["showList"]),
+          createVNode(QuickLinkDashboard),
+          _cache[0] || (_cache[0] = createBaseVNode("footer", { style: { "color": "rgba(0, 0, 0, 0.2)", "font-size": "0.8em" } }, "雨落无声作品", -1))
+        ], 32)
       ], 64);
     };
   }
