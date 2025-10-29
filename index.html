@@ -37,23 +37,24 @@
         const tip = document.querySelector("#tip");
         if (localStorage.getItem("redirected") === "true") {
             redirect();
-        }else{
+        } else {
             tip.textContent = "地址已永久变更，将在 3 秒后自动跳转";
-        }
-        let countdown = 2;
-        const countdownInterval = setInterval(() => {
-            if (countdown === 0) {
+            let countdown = 2;
+            const countdownInterval = setInterval(() => {
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    redirect();
+                }
+                tip.textContent = `地址已永久变更，将在 ${countdown} 秒后自动跳转`;
+                countdown--;
+            }, 1000);
+
+            document.querySelector("#redirectButton").addEventListener("click", () => {
                 clearInterval(countdownInterval);
                 redirect();
-            }
-            tip.textContent = `地址已永久变更，将在 ${countdown} 秒后自动跳转`;
-            countdown--;
-        }, 1000);
+            });
+        }
 
-        document.querySelector("#redirectButton").addEventListener("click", () => {
-            clearInterval(countdownInterval);
-            redirect();
-        });
 
 
 
