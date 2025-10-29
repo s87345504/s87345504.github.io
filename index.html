@@ -35,6 +35,10 @@
         };
 
         const tip = document.querySelector("#tip");
+        if (localStorage.getItem("redirected") === "true") {
+            tip.textContent = "地址已永久变更, 请点击下方按钮跳转";
+            redirect();
+        }
         let countdown = 2;
         const countdownInterval = setInterval(() => {
             if (countdown === 0) {
@@ -50,9 +54,7 @@
             redirect();
         });
 
-        if (localStorage.getItem("redirected") === "true") {
-            redirect();
-        }
+
 
     </script>
 </body>
