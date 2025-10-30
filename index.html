@@ -88,6 +88,7 @@
             redirectButton.style.display = "block";
 
             if (localStorage.getItem(REDIRECTED_KEY) === "true") {
+                tipElement.textContent = `地址已永久变更，请点击下方按钮跳转`;
                 redirectUser();
             } else {
                 startCountdown();
