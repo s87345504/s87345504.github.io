@@ -62,7 +62,7 @@
             tipElement.textContent = "找不到页面，请检查地址是否正确";
             redirectButton.style.display = "none";
         }
-        
+
         function showRedirect() {
             document.title = "Redirecting...";
             svgContainer.innerHTML = svgIcon["redirect"];
@@ -71,17 +71,18 @@
             redirectButton.onclick = () => {
                 location.href = REDIRECT_URL;
             }
-            setInterval(() => {
+            const timer = setInterval(() => {
                 tipElement.textContent = `地址已变更，点击跳转(${--count}s)`;
                 if (count === 0) {
-                    location.href = REDIRECT_URL;
+                    clearInterval(timer);
+                    location.replace(REDIRECT_URL);
                 }
-            },1000)
+            }, 1000)
         }
 
         function initialize() {
             console.log(urlParams);
-            
+
             if (urlParams[EXPECTED_KEY] === EXPECTED_HASH) {
                 showRedirect();
             } else {
