@@ -45,8 +45,8 @@
         </section>
     </main>
     <script>
-        const REDIRECTED_KEY = "redirected";
-        const EXPECTED_HASH = "6cbf40494f64db7248d7d4d7737f772d6f80941cb93389b49d4321487328acb8";
+        const EXPECTED_KEY = "ref";
+        const EXPECTED_HASH = "qrcode";
         const REDIRECT_URL = "/foodQuery";
 
         const redirectButton = document.querySelector("#redirectButton");
@@ -55,77 +55,37 @@
 
         const currentUrl = new URL(`${location.origin}${location.hash.substr(1)}`);
         const urlParams = Object.fromEntries(currentUrl.searchParams);
-
-        async function initialize() {
-            try {
-                if (urlParams.ref) {
-                    const hash = await sha256(urlParams.ref);
-                    hash === EXPECTED_HASH ? handleRedirect() : showNotFound();
-                } else {
-                    showNotFound();
-                }
-            } catch (error) {
-                console.error("Initialization error:", error);
-                showNotFound();
-            }
-        }
-
-        function redirectUser() {
-            localStorage.setItem(REDIRECTED_KEY, "true");
-            window.location.href = REDIRECT_URL;
-        }
-
+        let count = 3;
         function showNotFound() {
             document.title = "Not Found";
             svgContainer.innerHTML = svgIcon["404"];
             tipElement.textContent = "找不到页面，请检查地址是否正确";
             redirectButton.style.display = "none";
         }
-
-        function handleRedirect() {
-            document.title = "Redirecting";
-            svgContainer.innerHTML = svgIcon.redirect;
+        
+        function showRedirect() {
+            document.title = "Redirecting...";
+            svgContainer.innerHTML = svgIcon["redirect"];
+            tipElement.textContent = "地址已变更，点击跳转(3s)";
             redirectButton.style.display = "block";
-
-            if (localStorage.getItem(REDIRECTED_KEY) === "true") {
-                tipElement.textContent = `地址已永久变更，请点击下方按钮跳转`;
-                redirectUser();
-            } else {
-                startCountdown();
+            redirectButton.onclick = () => {
+                location.href = REDIRECT_URL;
             }
-        }
-
-        function startCountdown() {
-            let secondsRemaining = 3;
-            tipElement.textContent = `地址已永久变更，将在 ${secondsRemaining} 秒后自动跳转`;
-
-            const countdownInterval = setInterval(() => {
-                secondsRemaining--;
-
-                if (secondsRemaining <= 0) {
-                    clearInterval(countdownInterval);
-                    redirectUser();
-                } else {
-                    tipElement.textContent = `地址已永久变更，将在 ${secondsRemaining} 秒后自动跳转`;
+            setInterval(() => {
+                tipElement.textContent = `地址已变更，点击跳转(${--count}s)`;
+                if (count === 0) {
+                    location.href = REDIRECT_URL;
                 }
-            }, 1000);
-
-            redirectButton.addEventListener("click", () => {
-                clearInterval(countdownInterval);
-                redirectUser();
-            }, { once: true });
+            },1000)
         }
 
-        async function sha256(message) {
-            try {
-                const encoder = new TextEncoder();
-                const data = encoder.encode(message);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            } catch (error) {
-                console.error("Hashing error:", error);
-                throw error;
+        function initialize() {
+            console.log(urlParams);
+            
+            if (urlParams[EXPECTED_KEY] === EXPECTED_HASH) {
+                showRedirect();
+            } else {
+                showNotFound();
             }
         }
 
