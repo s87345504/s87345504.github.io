@@ -66,13 +66,13 @@
         function showRedirect() {
             document.title = "Redirecting...";
             svgContainer.innerHTML = svgIcon["redirect"];
-            tipElement.textContent = "地址已变更，点击跳转(3s)";
+            tipElement.textContent = "站点地址已变更，3秒后将自动跳转到新页面。";
             redirectButton.style.display = "block";
             redirectButton.onclick = () => {
                 location.href = REDIRECT_URL;
             }
             const timer = setInterval(() => {
-                tipElement.textContent = `地址已变更，点击跳转(${--count}s)`;
+                tipElement.textContent = `站点地址已变更，${--count}秒后将自动跳转到新页面。`;
                 if (count === 0) {
                     clearInterval(timer);
                     location.replace(REDIRECT_URL);
