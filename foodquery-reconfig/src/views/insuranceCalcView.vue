@@ -7,12 +7,7 @@ import { useRoute } from 'vue-router'
 
 const appStore = useAppStore()
 const route = useRoute()
-if('rain' in route.query){
-  showDialog({
-       title: '友情提示',
-      message: '医保报销比例计算器已迁移至新地址！原地址作废！'
-})
-}
+
 
 onMounted(() => {
   appStore.title='医保报销计算器'
@@ -62,8 +57,8 @@ const clear = () => {
 
 <template>
   <div>
-    <CellGroup inset title="任意输入两项数值，点击'计算'即可算出结果.">
-    <Field v-for="input in inputs" v-model.number="input.value"  :label="input.name" 
+    <CellGroup inset :title="appStore.title">
+    <Field v-for="input in inputs" v-model.number="input.value" :key="input.name" :label="input.name" 
       type="number"
       :placeholder="input.description">
       <template #right-icon>
@@ -77,6 +72,15 @@ const clear = () => {
       <Button @click="c" type="primary" block>计算</Button>
     </Cell>
   </CellGroup>
+  <CellGroup inset title="使用说明">
+            
+                <ul class="van-cell" style="list-style-type: decimal">
+                    <li>用于计算医保报销比例,输入其中任意两种数值即可计算出结果.</li>
+
+                 
+                    </ul>
+            
+        </CellGroup>
   </div>
 
 </template>

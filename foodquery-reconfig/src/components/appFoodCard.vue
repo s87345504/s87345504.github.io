@@ -8,7 +8,7 @@ const props = defineProps({
   food: Object,
   targetPart:String
 })
-const contentLevel=computed(()=>{
+/* const contentLevel=computed(()=>{
     let k ={}
     let p ={}
     if(props.food.k>450){
@@ -47,29 +47,43 @@ const contentLevel=computed(()=>{
 
     
   return{k,p}
-})
+}) */
 
+
+const contentLevel = computed(() => {
+  const getLevelInfo = (value, ranges) => {
+    const { danger, warning, success } = ranges;
+    if (value > danger) return { type: 'danger', text: '超高' };
+    if (value > warning) return { type: 'warning', text: '高' };
+    if (value > success) return { type: 'success', text: '中' };
+    return { type: 'primary', text: '低' };
+  };
+  const kRanges = { danger: 450, warning: 300, success: 150 };
+  const pRanges = { danger: 300, warning: 200, success: 100 };
+  return {
+    k: getLevelInfo(props.food.k, kRanges),
+    p: getLevelInfo(props.food.p, pRanges)
+  };
+});
 </script>
-
 <template>
   <section role="food-card">
     <CellGroup inset >
       <template #title>
             <h6 class="food-name" >
               {{ food.name }} 
-           
-             
              </h6>
              <small v-if="food.alias" :title="food.alias" class="alias"> {{ food.alias }}</small>
-             
       </template>
-      <Cell :class="{'cell-select': part.alias ===targetPart}" v-for="part in appStore.sortTypes" :key="part.alias" :title="part.text">
+      <Cell  v-for="part in appStore.sortTypes" :key="part.alias" :title="part.text">
           <template #value>
-           <div class="value">
+           <div v-if="food[part.alias]" class="value">
             <Tag style="margin-right: 12px;" v-if="part.alias in contentLevel" size="medium" :type="contentLevel[part.alias]?.type">{{ contentLevel[part.alias]?.text }}</Tag>
-            <span style="color:inherit">{{ food[part.alias]  }}</span>
-            <span style="margin-left: 4px"> {{ part.unit }} </span>
+            <span  style="color:var(--van-text-color);font-weight: 550;">{{ food[part.alias] }}</span>
+            <span id="unit" style="margin-left: 4px"> {{ part.unit }} </span>
+
            </div>
+           <div class="value null" v-else> - </div>
           </template>
           <!-- <template #label>
             <Tag style="margin-right: 12px;" v-if="part.alias in contentLevel" size="medium" :type="contentLevel[part.alias]?.type">{{ contentLevel[part.alias]?.text }}</Tag>
@@ -82,10 +96,12 @@ const contentLevel=computed(()=>{
 </template>
 
 <style scoped>
+.van-tag--warning{
+  --van-tag-warning-color:#FF6600;
+}
 .food-name {
   color: var(--van-primary-color);
   margin: 0;
-  text-wrap: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   font-weight: 400;
@@ -97,15 +113,13 @@ const contentLevel=computed(()=>{
   font-size: 12px;
   display: block;
   width: 100%;
-  text-wrap: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.cell-select{
-  color:var(--van-primary-color);
-  background-color: var(--van-active-color);
-}
-.cell-select .value{
-  color:var(--van-primary-color);
+
+
+
+ div.null{
+  color:var(--van-text-color);
 }
 </style>

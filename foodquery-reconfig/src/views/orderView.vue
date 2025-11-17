@@ -26,11 +26,12 @@ watch(() => route.query, (query) => {
   if('index' in query && 'sort' in query) {
     if(+query.index >=0 && +query.index < appStore.sortTypes.length) {
         sortInfo.value.value=+query.index
-        appStore.title=`${query.sort==='true'?'高':'低'}${appStore.sortTypes[+query.index].text}食物含量前100名`
+        appStore.title=`${query.sort==='true'?'高':'低'}${appStore.sortTypes[+query.index].text}食物 - Top100`
     }
-    if(query.sort === 'true' || query.sort === 'false') {
-      sortInfo.value.type=query.sort==='true'
-    }
+    // if(query.sort === 'true' || query.sort === 'false') {
+    //   sortInfo.value.type=query.sort==='true'
+    // }
+    sortInfo.value.type=query.sort==='true' || query.sort==='1'
   } 
   
  

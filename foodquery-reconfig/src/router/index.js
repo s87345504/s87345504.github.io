@@ -5,10 +5,11 @@ import orderView from '../views/orderView.vue'
 import notFoundView from '../views/notFoundView.vue'
 import classView from '@/views/classView.vue'
 import insuranceCalcView from '@/views/insuranceCalcView.vue'
+import ktvCalcView from '@/views/ktvCalcView.vue'
 import typeEditView from '../views/typeEditView.vue'
 import foodIdView from '@/views/foodIdView.vue'
 import aboutView from '@/views/aboutView.vue'
-import {h} from 'vue'
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -45,7 +46,13 @@ const router = createRouter({
       path: '/insuranceCalc',
       name: 'insuranceCalc',
       component: insuranceCalcView
-    }, {
+    },
+    {
+      path: '/ktvCalc',
+      name: 'ktvCalc',
+      component: ktvCalcView
+    }, 
+    {
       path: '/about',
       name: 'about',
       component: aboutView
@@ -65,10 +72,5 @@ const router = createRouter({
 router.afterEach((to, from) => {
   const area = document.querySelector('#client')
   if (area) area.scrollTop = 0
-  if (typeof WeixinJSBridge === 'object') {
-    WeixinJSBridge?.call('hideOptionMenu');
-    WeixinJSBridge?.call(`hideToolbar`); //隐藏右下面工具栏
-  }
- 
 })
 export default router

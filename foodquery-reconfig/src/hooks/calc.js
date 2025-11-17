@@ -1,4 +1,4 @@
-import {showToast } from 'vant'
+import {showNotify } from 'vant'
 
 export default function calc(values) {
     //六种组合模式
@@ -13,23 +13,23 @@ export default function calc(values) {
         }
     }
     if(!typeList.includes(flags)){
-        showToast('最少需要输入两个项目或输入值无效');
+        showNotify('最少需要输入两个项目或输入值无效');
         return false
     }
     if(flags === 3 && values[0].value < values[1].value){
-        showToast('医保消费金额不能小于统筹支付金额');
+        showNotify('医保消费金额不能小于统筹支付金额');
         return false
     }
     if(flags === 5 && values[0].value < values[2].value){
-        showToast('医保消费金额不能小于个人支付金额');
+        showNotify('医保消费金额不能小于个人支付金额');
         return false
     }
     if(flags & 8 && values[3].value <0 || values[3].value > 100){
-        showToast('报销比例应在0-100之间');
+        showNotify('报销比例应在0-100之间');
         return false
     }
     if(flags===12 && values[3].value===100){
-        showToast('报销比例不能为100%');
+        showNotify('报销比例不能为100%');
         return false
     }
     switch (flags) {

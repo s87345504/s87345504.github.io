@@ -1,7 +1,6 @@
 <script setup name="appLoading">
-import { Popup, Loading,Progress  } from 'vant';
-import { useAppStore } from '@/stores/appStore';
-const appStore = useAppStore();
+import { Popup, Loading  } from 'vant';
+
 </script>
 
 <template>

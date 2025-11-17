@@ -104,14 +104,16 @@ const back = () => {
     </NavBar>
     <!-- <NoticeBar  mode="closeable" left-icon="volume-o" v-if="appStore.notice" :text="appStore.notice"></NoticeBar> -->
     <headerNoticeBar></headerNoticeBar>
-    <Search v-if="route.name!=='insuranceCalc'" v-model="appStore.keyword" @search="searchFood" placeholder="请输入欲查询食物的关键字" input-align="center" />
+    <Search  v-model="appStore.keyword" @search="searchFood" placeholder="请输入欲查询食物的关键字" input-align="center" />
   </header>
-  <ActionSheet  title="含量排行榜前100名" :closeable="false" @select="onSelect" v-model:show="actionSheetShow" close-on-click-action cancel-text="取消" :actions="actions" teleport="body">
+  <ActionSheet  title="钾磷含量 - Top100" :closeable="false" @select="onSelect" v-model:show="actionSheetShow" close-on-click-action cancel-text="取消" :actions="actions" teleport="body">
   </ActionSheet>
 </template>
 
 <style scoped>
 header {
   flex-shrink: 0;
+  
 }
+
 </style>

@@ -16,7 +16,7 @@ const appStore = useAppStore();
     :touchable="false"
     :show-indicators="false"
     >
-    <SwipeItem v-for="notice in appStore.notice" >{{ notice }}</SwipeItem>
+    <SwipeItem v-for="notice in appStore.notice" :key='notice'>{{ notice }}</SwipeItem>
     </Swipe>
 
   </NoticeBar>

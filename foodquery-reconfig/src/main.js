@@ -28,26 +28,46 @@ app.use(router)  //路由的引入，等会放开
 
 app.mount('#app')
 
-console.info(`我入红尘几经年;
-是非总为情万千;
-宋地闻秋悲哀雁;
-雨打枯荷听管弦;
-轩窗静里忆从前!
-`)
+// console.info(`我入红尘几经年;
+// 是非总为情万千;
+// 宋地闻秋悲哀雁;
+// 雨打枯荷听管弦;
+// 轩窗静里忆从前!
+// `)
 
 
-const mainVersion = getBuildTime()
+const ver= getBuildTime()
 //版本更新后,清除缓存
-if (localStorage.getItem('current-build') !== mainVersion) {
-  localStorage.clear()
-  // localStorage.setItem('sortTypes',`[{"text":"蛋白质","alias":"protein","unit":"克","value":2},{"text":"脂肪","alias":"fat","unit":"克","value":3},{"text":"钙","alias":"ca","unit":"毫克","value":4},{"text":"铁","alias":"fe","unit":"毫克","value":5}]`)
-  localStorage.setItem('current-build', mainVersion)
+if (localStorage.getItem('current-build') !== ver) {
+  console.log('版本更新,清除缓存')
+  const clsName=['sortTypes','sortInfo','food-class','food-data']
+  clsName.forEach(item=>{
+    localStorage.removeItem(item)
+  })
+  localStorage.setItem('current-build', ver)
+  
 }
 
+// 获取构建时间
 function getBuildTime() {
-  if (import.meta.env.PROD) {
-    const build = document.querySelector('meta[name="build-time"]');
-    return build ? build.getAttribute('content') : '未知版本';
-  }
-  return 'dev';
+    // 开发环境处理
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        try {
+            window.$vc?.showSwitch?.();
+            localStorage.setItem('wechat_fake', '1');
+            return location.port === "5173" ? "dev" : "雨轩本机专用版";
+        } catch (e) {
+            console.error("开发环境处理出错:", e);
+            return "开发版(错误)";
+        }
+    }
+
+    // 生产环境处理
+    try {
+        const build = document.querySelector('meta[name="build-time"]');
+        return build?.getAttribute('content') || '未知版本';
+    } catch (e) {
+        console.error("获取构建时间出错:", e);
+        return '未知版本';
+    }
 }

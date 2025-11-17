@@ -1,21 +1,23 @@
 <script setup name="App">
 
-import { ConfigProvider, BackTop, showConfirmDialog } from 'vant'
+import { ConfigProvider, BackTop, showConfirmDialog,Watermark } from 'vant'
 import appHeader from './components/appHeader.vue';
 import appLoading from './components/appLoading.vue';
 import NoWechat from './components/NoWechat.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import appFooter from './components/appFooter.vue';
 import { useThemeStore } from './stores/themeStore'
 import { useAppStore } from '@/stores/appStore'
 
 
+
+
 const themeStore = useThemeStore()
 const appStrore = useAppStore()
 
-const is_wechat = ref(localStorage.getItem('wechat_fake') !== null)
+const is_wechat = ref(localStorage.getItem('wechat_fake') == true || import.meta.env.DEV)
 
-
+const watermark =ref("雨落无声")
 
 if (typeof WeixinJSBridge !== 'object') {
   document.addEventListener('WeixinJSBridgeReady', () => {
@@ -29,19 +31,22 @@ if (typeof WeixinJSBridge !== 'object') {
 
 function weixin() {
   is_wechat.value = true
-  WeixinJSBridge.call('hideOptionMenu');
-  WeixinJSBridge.call(`hideToolbar`); //隐藏右下面工具栏
+  // WeixinJSBridge.call('hideOptionMenu');
+  // WeixinJSBridge.call(`hideToolbar`); //隐藏右下面工具栏
 
 }
 
+// import {getThemeCSS} from './hooks/newYearRedTheme'
 
+// console.log(getThemeCSS());
 
+// const themeCSS =reactive(getThemeCSS())
 
 </script>
 
 <template>
   <NoWechat v-if="!is_wechat" />
-  <ConfigProvider v-else :theme="themeStore.theme" class="container" 
+  <ConfigProvider v-else :theme='themeStore.theme'  class="container" 
    >
     <appHeader :title='appStrore.title' />
     <article id="client">
@@ -60,7 +65,11 @@ function weixin() {
     <appFooter></appFooter>
     <!-- appStrore.foods.length===0 -->
     <appLoading :show="appStrore.foods.length === 0"></appLoading>
-    <!-- <Watermark content="RAIN" :full-page="true" :opacity="0.5"/>  -->
+    <Watermark :width="200" :rotate="-18" :gap-x="50" :gap-y="100" :opacity="0.04" >
+       <template #content>
+        <div class="watermark">{{ watermark }}</div>
+  </template>
+    </Watermark>
 
   </ConfigProvider>
 
@@ -81,6 +90,7 @@ function weixin() {
   background-color: var(--van-background);
   color: var(--van-text-color);
   position: relative;
+  user-select: none;
 }
 
 footer {

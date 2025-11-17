@@ -31,6 +31,8 @@ const classResult = computed(() => {
     const filter = appStore.foods.filter(item => ids.value.includes(item.id))
     if (filter.length > 2) {
       //排序
+     
+      
       const key = appStore.sortTypes[appStore.sortInfo.value].alias
       return filter.sort((a, b) => appStore.sortInfo.type ? a[key] - b[key] : b[key] - a[key])
     } else {

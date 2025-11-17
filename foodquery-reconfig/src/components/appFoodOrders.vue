@@ -1,9 +1,10 @@
 
 
 <script setup  name="appFoodOrders">
-import { Cell, CellGroup } from 'vant'
+import { Cell, CellGroup,Highlight } from 'vant'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/appStore'
+import appHighLight from './appHighLight.vue';
 import { computed } from 'vue';
 const appStore = useAppStore()
 
@@ -13,6 +14,10 @@ const props = defineProps({
     sorts:{
       type:Object,
       default:{value:0,type:true}
+    },
+    keyword:{
+      type:String,
+      default:"."
     }
    
 })
@@ -26,7 +31,11 @@ const props = defineProps({
   
     <CellGroup class="order-list" inset >
 
-      <Cell class="van-haptics-feedback" is-link :to="`/food/${food.id}`" v-for="(food,index) in foods" :title="index+1+'.'+food.name"  :key="food.id">
+      <Cell class="van-haptics-feedback" is-link :to="`/food/${food.id}`" v-for="(food,index) in foods"   :key="food.id">
+        <template #title>
+          <appHighLight  :keyword="keyword" :text="`${index+1}.${food.name}`" />
+        </template>
+        
         <template #value>
             <div class="value">
             <span>{{ food[sortTypes[sorts.value].alias] }}</span>
@@ -34,7 +43,7 @@ const props = defineProps({
            </div>
         </template>
         <template v-if="food.alias!==null" #label>
-            <span>{{ food.alias }}</span>
+            <appHighLight :keyword="keyword" :text="food.alias" />
         </template>
       </Cell>
     </CellGroup>

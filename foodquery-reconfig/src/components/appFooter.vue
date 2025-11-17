@@ -2,9 +2,7 @@
 import {showConfirmDialog } from 'vant';
 import { useRouter, useRoute} from 'vue-router'
 import {useThemeStore} from '@/stores/themeStore'
-
-import { onMounted,ref } from 'vue';
-import { watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 
 
@@ -12,6 +10,11 @@ const theme = useThemeStore()
 
 const router = useRouter()
 const route = useRoute()
+//console.log(route);
+
+const debug=computed(()=>{
+  return route.name=="about" && import.meta.env.MODE==='development' || route.query.debug
+})
 
 
 
@@ -32,6 +35,12 @@ const home = ()=>{
 }
 
 
+
+  
+  
+
+
+
 </script>
 
 
@@ -41,11 +50,10 @@ const home = ()=>{
     <ul>
         
         
-        <li v-if="route.path!=='/'" ><a @click.prevent="home">首页</a></li>
+        <li  :class="{disabled: route.path=='/'}" ><a @click.prevent="home">首页</a></li>
         <li><a @click.prevent="theme.toggleTheme">主题</a></li>        
-        <!-- <li><a @click.prevent="VConsoleOpen" >debug</a></li> -->
-        <li v-if="route.path !=='/about'"><a @click.prevent="about" >雨落无声</a></li>
-        <li v-if="route.path !=='/insuranceCalc'"><a @click.prevent="router.push('/insuranceCalc')">医保报销计算器</a></li>
+        <li :class="{disabled: route.path=='/about'}"  ><a @click.prevent="about" >关于</a></li>
+        
        
         
     </ul>
@@ -53,6 +61,7 @@ const home = ()=>{
 </template>
 
 <style scoped>
+
 footer ul{
     display: flex;
     justify-content: center;
@@ -60,6 +69,7 @@ footer ul{
     color: var(--van-text-color-2);
     gap: 12px;
     margin: 4px 0;
+    
 }
 
 footer ul li:not(:last-child)::after{
@@ -72,6 +82,10 @@ footer ul li:not(:last-child)::after{
 footer ul li a{
     color: inherit;
     cursor: pointer;
+}
+footer ul li.disabled a{
+    color: var(--van-text-color);
+    cursor:auto;
 }
 .my-rolling-text {
 

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 const count = ref(0)
 const show = ref(sessionStorage.getItem("backdoor") || false)
-function debug() {
+/* function debug() {
     if (show.value) {
         return
     }
@@ -32,14 +32,14 @@ function reset(e) {
         console.log('reset back door count');
         count.value = 0
     }
-}
+} */
 </script>
 
 <template>
     <div class="no_wechat" @click="reset">
         <Empty>
             <template #image>
-                <div class="wechat_logo" @click="debug">
+                <div class="wechat_logo" >
                     <svg t="1725432177815" class="icon" viewBox="0 0 1284 1024" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" p-id="8993" width="128" height="128">
                         <path
@@ -55,7 +55,7 @@ function reset(e) {
                 <h3>请使用微信客户端打开</h3>
             </template>
         </Empty>
-        <CellGroup v-show="show" inset>
+        <CellGroup v-if="false" inset>
             <Cell @click="openVconsole" is-link title="vConsole" value="vconsole调试工具" />
             <Cell @click="wechatFake" is-link title="wechatFake" value="wechatfake" />
         </CellGroup>
